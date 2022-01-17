@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 __pycache__/*
 logs/*
 test*
 todo.json
+=======
+__pycache__
+*.pyc
+>>>>>>> 529fded (first commit)
