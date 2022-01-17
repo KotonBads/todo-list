@@ -6,4 +6,9 @@ todo.json
 =======
 __pycache__
 *.pyc
+<<<<<<< HEAD
 >>>>>>> 529fded (first commit)
+=======
+test.json
+test.py
+>>>>>>> 43195e9 (add test files to gitignore)
