@@ -35,7 +35,9 @@ def add_todo(name: str, description: str):
     with open('todo.json', 'w') as f:
         json.dump(todo, f)
     
-    print(f'{green}TODO added!{end}\n')
+    print(f'{green}TODO added!{end}')
+    print(f'{yellow}Name:{end} {cyan}{name}{end}')
+    print(f'{yellow}Description:{end} {cyan}{description}{end}')
 
 def mark_as_done(index: int):
     todo = get_todo()
@@ -44,18 +46,18 @@ def mark_as_done(index: int):
     with open('todo.json', 'w') as f:
         json.dump(todo, f)
     
-    print(f'{green}TODO marked as done!{end}\n')
+    print(f'{green}TODO ({index}. {todo[index]["name"]}) marked as done!{end}\n')
 
 def view_todo():
     todo = get_todo()
     for i, item in enumerate(todo):
-        print(f'{blue}{i}: {yellow}{item["name"]}{end}\n')
+        print(f'{blue}{i}. {yellow}{item["name"]}{end}')
 
 def open_todo(index: int):
     todo = get_todo()
     print(f'{yellow}{bold}Name:{end} {cyan}{todo[index]["name"]}{end}')
     print(f'{yellow}{bold}Description:{end} {cyan}{todo[index]["description"]}{end}')
-    print(f'{green}{bold}Done:{end} {purple}{todo[index]["done"]}{end}')
+    print(f'{green}{bold}Done:{end} {purple}{todo[index]["done"]}{end}\n')
 
 def remove_todo(index: int):
     todo = get_todo()
