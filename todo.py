@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import json
+import time
 import platform
 import os
 import textwrap
@@ -27,7 +28,8 @@ def add_todo(name: str, description: str):
     todo.append(
             {
             'name': name, 
-            'description': description, 
+            'description': description,
+            'added': time.time(),
             'done': False
             }
         )
@@ -57,6 +59,7 @@ def open_todo(index: int):
     todo = get_todo()
     print(f'{yellow}{bold}Name:{end} {cyan}{todo[index]["name"]}{end}')
     print(f'{yellow}{bold}Description:{end} {cyan}{todo[index]["description"]}{end}')
+    print(f'{yellow}{bold}Added:{end} {cyan}{time.ctime(todo[index]["added"])}{end}')
     print(f'{green}{bold}Done:{end} {purple}{todo[index]["done"]}{end}\n')
 
 def remove_todo(index: int):
