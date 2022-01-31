@@ -70,7 +70,7 @@ def open_todo(index: int):
 def remove_todo(index: int):
     todo = get_todo()
 
-    logger.log(f'TODO: \'{index} - {todo[index]["name"]}\' removed.\n\tContents: {todo[index]}')
+    logger.log(f'TODO: \'{index} - {todo[index]["name"]}\' removed.\n\t\tContents: {todo[index]}')
 
     todo.pop(index)
 
@@ -149,7 +149,7 @@ if __name__ == '__main__':
 
         except IndexError as e:
             click.clear()
-            logger.log(e)
+            logger.warning(e)
             print(f'{red}{bold}Invalid index.{end}')
             raise
 
@@ -158,7 +158,11 @@ if __name__ == '__main__':
             print(f'{red}{bold}File \'todo.json\': File not found.\nYou might want to run Setup (7){end}')
             raise
 
-    except (FileNotFoundError, KeyboardInterrupt, SystemExit) as e:
+    except FileNotFoundError as e:
+        logger.warning(e)
+        print(f'\n{red}{bold}Exiting...{end}')
+
+    except (KeyboardInterrupt, SystemExit) as e:
         logger.log(e)
         print(f'\n{red}{bold}Exiting...{end}')
 
