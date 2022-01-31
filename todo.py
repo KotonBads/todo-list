@@ -42,7 +42,7 @@ def add_todo(name: str, description: str):
     print(f'{yellow}Name:{end} {cyan}{name}{end}')
     print(f'{yellow}Description:{end} {cyan}{description}{end}')
 
-    logger.log(f'TODO: {name} added')
+    logger.log(f'TODO: \'{name}\' added')
 
 def mark_as_done(index: int):
     todo = get_todo()
@@ -53,7 +53,7 @@ def mark_as_done(index: int):
     
     print(f'{green}TODO ({index}. {todo[index]["name"]}) marked as done!{end}\n')
 
-    logger.log(f'TODO: {todo[index]["name"]} marked as done')
+    logger.log(f'TODO: \'{index} - {todo[index]["name"]}\' marked as done')
 
 def view_todo():
     todo = get_todo()
@@ -69,14 +69,16 @@ def open_todo(index: int):
 
 def remove_todo(index: int):
     todo = get_todo()
+
+    logger.log(f'TODO: \'{index} - {todo[index]["name"]}\' removed.\n\tContents: {todo[index]}')
+
     todo.pop(index)
 
     with open('todo.json', 'w') as f:
         json.dump(todo, f)
-    
+
     print(f'{green}TODO removed!{end}\n')
 
-    logger.log(f'TODO: {todo[index]["name"]} removed')
 
 def ui(choice: str, text: str):
     if choice == '1':
