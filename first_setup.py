@@ -5,9 +5,9 @@ import json
 
 def main():
     try:
-        os.system('pip install click')
-    except:
         os.system('pip3 install click')
+    except:
+        os.system('pip install click')
 
     if not os.path.exists('todo.json'):
         os.mknod('todo.json')
