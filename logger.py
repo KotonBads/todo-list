@@ -1,12 +1,12 @@
 import time
 import os
 
-def log(log: str):
-    if not os.path.exists('logs/'):
-        os.mkdir('logs/')
+def log(log: str, path: str = 'logs'):
+    if not os.path.exists(path):
+        os.mkdir(path)
 
-    if not os.path.exists(f'logs/{time.strftime("%Y-%m-%d")}.txt'):
-        os.mknod(f'logs/{time.strftime("%Y-%m-%d")}.txt')
+    if not os.path.exists(f'{path}/{time.strftime("%Y-%m-%d")}.txt'):
+        os.mknod(f'{path}/{time.strftime("%Y-%m-%d")}.txt')
 
-    with open(f'logs/{time.strftime("%Y-%m-%d")}.txt', 'a') as f:
+    with open(f'{path}/{time.strftime("%Y-%m-%d")}.txt', 'a') as f:
         f.write(f'{time.strftime("%H:%M:%S")} {log}\n')
