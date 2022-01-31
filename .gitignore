@@ -11,4 +11,9 @@ __pycache__
 =======
 test.json
 test.py
+<<<<<<< HEAD
 >>>>>>> 43195e9 (add test files to gitignore)
+=======
+todo.json
+logs/*
+>>>>>>> bd18be5 (add more files to gitignore)
