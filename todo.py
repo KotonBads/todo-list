@@ -55,6 +55,17 @@ def mark_as_done(index: int):
 
     logger.log(f'TODO: \'{index} - {todo[index]["name"]}\' marked as done')
 
+def unmark_as_done(index: int):
+    todo = get_todo()
+    todo[index]['done'] = False
+
+    with open('todo.json', 'w') as f:
+        json.dump(todo, f)
+    
+    print(f'{green}TODO ({index}. {todo[index]["name"]}) unmarked as done!{end}\n')
+
+    logger.log(f'TODO: \'{index} - {todo[index]["name"]}\' unmarked as done')
+
 def view_todo():
     todo = get_todo()
     for i, item in enumerate(todo):
@@ -91,18 +102,19 @@ def ui(choice: str, text: str):
         mark_as_done(index)
 
     elif choice == '3':
-        view_todo()
+        index = int(input(f'{yellow}Enter index: {end}'))
+        unmark_as_done(index)
 
     elif choice == '4':
+        view_todo()
+
+    elif choice == '5':
         index = int(input(f'{yellow}Enter index: {end}'))
         open_todo(index)
     
-    elif choice == '5':
+    elif choice == '6':
         index = int(input(f'{yellow}Enter index: {end}'))
         remove_todo(index)
-
-    elif choice == '6':
-        exit()
     
     elif choice == '7':
         first_setup.main()
@@ -112,6 +124,9 @@ def ui(choice: str, text: str):
 
     elif choice == 'c':
         click.clear()
+    
+    elif choice == 'exit':
+        exit()
 
     else:
         print(f'{red}Invalid choice. Type \'h\' for help.{end}')
@@ -122,14 +137,15 @@ def main():
         {blue}{bold}---------- TODO LIST ----------{end}
         {yellow}1.{end} {cyan}Add a new TODO{end}
         {yellow}2.{end} {cyan}Mark a TODO as done{end}
-        {yellow}3.{end} {cyan}View all TODOs{end}
-        {yellow}4.{end} {cyan}Open a TODO{end}
-        {yellow}5.{end} {cyan}Remove a TODO{end}
-        {yellow}6.{end} {cyan}Exit{end}
+        {yellow}3.{end} {cyan}Unmark a TODO as done{end}
+        {yellow}4.{end} {cyan}View all TODOs{end}
+        {yellow}5.{end} {cyan}Open a TODO{end}
+        {yellow}6.{end} {cyan}Remove a TODO{end}
         {yellow}7.{end} {cyan}Setup / Clear TODO{end}
         
         {purple}h{end} - {green}Help{end}
         {purple}c{end} - {green}Clear screen{end}
+        {purple}exit{end} - {green}Exit{end}
         {blue}{bold}--------------------------------{end}
         """
     )
@@ -162,8 +178,8 @@ if __name__ == '__main__':
         logger.warning(e)
         print(f'\n{red}{bold}Exiting...{end}')
 
-    except (KeyboardInterrupt, SystemExit) as e:
-        logger.log(e)
+    except (KeyboardInterrupt, SystemExit):
+        logger.log('Exited')
         print(f'\n{red}{bold}Exiting...{end}')
 
     except IndexError:
