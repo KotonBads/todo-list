@@ -153,7 +153,7 @@ if __name__ == '__main__':
 
         except FileNotFoundError:
             click.clear()
-            print(f'{red}{bold}File \'todo.json\': File not found.{end}')
+            print(f'{red}{bold}File \'todo.json\': File not found.\nYou might want to run Setup (7){end}')
             raise
 
     except (FileNotFoundError, KeyboardInterrupt, SystemExit) as e:
