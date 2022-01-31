@@ -2,9 +2,8 @@
 
 import json
 import time
-import platform
-import os
 import textwrap
+import click
 import first_setup
 
 # ANSI Escape Codes
@@ -71,19 +70,6 @@ def remove_todo(index: int):
     
     print(f'{green}TODO removed!{end}\n')
 
-def clear():
-    if platform.system() == 'Windows':
-        os.system('cls')
-
-    elif platform.system() == 'Linux':
-        os.system('clear')
-
-    elif platform.system() == 'Darwin':
-        os.system('clear')
-
-    else:
-        print(f'{red}Unknown OS{end}\n')
-
 def ui(choice: str, text: str):
     if choice == '1':
         name = input(f'{yellow}Enter name: {end}')
@@ -115,7 +101,7 @@ def ui(choice: str, text: str):
         print(text)
 
     elif choice == 'c':
-        clear()
+        click.clear()
 
     else:
         print(f'{red}Invalid choice. Type \'h\' for help.{end}')
@@ -148,21 +134,21 @@ def main():
 if __name__ == '__main__':
     try:
         try:
+            click.clear()
             main()
 
         except IndexError:
+            click.clear()
             print(f'{red}{bold}Invalid index.{end}')
             raise
 
         except FileNotFoundError:
+            click.clear()
             print(f'{red}{bold}File \'todo.json\': File not found.{end}')
             raise
-        
-        else:
-            main()
-    
+
     except (FileNotFoundError, KeyboardInterrupt, SystemExit):
         print(f'{red}{bold}Exiting...{end}')
-    
+
     except IndexError:
         main()
