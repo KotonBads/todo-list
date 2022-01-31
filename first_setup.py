@@ -3,7 +3,7 @@
 import os
 import json
 
-if __name__ == '__main__':
+def main():
     try:
         os.system('pip install click')
     except:
@@ -14,3 +14,6 @@ if __name__ == '__main__':
 
     with open('todo.json', 'w') as f:
         json.dump([], f)
+
+if __name__ == '__main__':
+    main()
