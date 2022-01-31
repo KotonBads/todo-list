@@ -4,7 +4,9 @@ import json
 import time
 import textwrap
 import click
+
 import first_setup
+import logger
 
 # ANSI Escape Codes
 red = '\033[31m'
@@ -40,6 +42,8 @@ def add_todo(name: str, description: str):
     print(f'{yellow}Name:{end} {cyan}{name}{end}')
     print(f'{yellow}Description:{end} {cyan}{description}{end}')
 
+    logger.log(f'TODO: {name} added')
+
 def mark_as_done(index: int):
     todo = get_todo()
     todo[index]['done'] = True
@@ -48,6 +52,8 @@ def mark_as_done(index: int):
         json.dump(todo, f)
     
     print(f'{green}TODO ({index}. {todo[index]["name"]}) marked as done!{end}\n')
+
+    logger.log(f'TODO: {todo[index]["name"]} marked as done')
 
 def view_todo():
     todo = get_todo()
@@ -69,6 +75,8 @@ def remove_todo(index: int):
         json.dump(todo, f)
     
     print(f'{green}TODO removed!{end}\n')
+
+    logger.log(f'TODO: {todo[index]["name"]} removed')
 
 def ui(choice: str, text: str):
     if choice == '1':
@@ -137,8 +145,9 @@ if __name__ == '__main__':
             click.clear()
             main()
 
-        except IndexError:
+        except IndexError as e:
             click.clear()
+            logger.log(e)
             print(f'{red}{bold}Invalid index.{end}')
             raise
 
@@ -147,8 +156,9 @@ if __name__ == '__main__':
             print(f'{red}{bold}File \'todo.json\': File not found.{end}')
             raise
 
-    except (FileNotFoundError, KeyboardInterrupt, SystemExit):
-        print(f'{red}{bold}Exiting...{end}')
+    except (FileNotFoundError, KeyboardInterrupt, SystemExit) as e:
+        logger.log(e)
+        print(f'\n{red}{bold}Exiting...{end}')
 
     except IndexError:
         main()
