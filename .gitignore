@@ -10,10 +10,14 @@ __pycache__
 >>>>>>> 529fded (first commit)
 =======
 test.json
+<<<<<<< HEAD
 test.py
 <<<<<<< HEAD
 >>>>>>> 43195e9 (add test files to gitignore)
 =======
+=======
+test*.py
+>>>>>>> 18718f0 (ignore all python files that has test)
 todo.json
 logs/*
 >>>>>>> bd18be5 (add more files to gitignore)
