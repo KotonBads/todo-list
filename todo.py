@@ -3,21 +3,12 @@
 import json
 import time
 import textwrap
+from unicodedata import name
 import click
 
 import first_setup
 import logger
-
-# ANSI Escape Codes
-red = '\033[31m'
-green = '\033[32m'
-yellow = '\033[33m'
-blue = '\033[34m'
-purple = '\033[35m'
-cyan = '\033[36m'
-white = '\033[37m'
-end = '\033[0m'
-bold = '\033[1m'
+import color
 
 def get_todo() -> list:
     with open('todo.json') as f:
@@ -38,9 +29,9 @@ def add_todo(name: str, description: str):
     with open('todo.json', 'w') as f:
         json.dump(todo, f)
     
-    print(f'{green}TODO added!{end}')
-    print(f'{yellow}Name:{end} {cyan}{name}{end}')
-    print(f'{yellow}Description:{end} {cyan}{description}{end}')
+    print(color.green('TODO added!'))
+    print(f'{color.yellow("Name: ")} {color.cyan(name)}')
+    print(f'{color.yellow("Description: ")} {color.cyan(description)}')
 
     logger.log(f'TODO: \'{name}\' added')
 
@@ -51,7 +42,7 @@ def mark_as_done(index: int):
     with open('todo.json', 'w') as f:
         json.dump(todo, f)
     
-    print(f'{green}TODO ({index}. {todo[index]["name"]}) marked as done!{end}\n')
+    print(color.green(f'TODO ({index}. {todo[index]["name"]}) marked as done!\n'))
 
     logger.log(f'TODO: \'{index} - {todo[index]["name"]}\' marked as done')
 
@@ -62,21 +53,21 @@ def unmark_as_done(index: int):
     with open('todo.json', 'w') as f:
         json.dump(todo, f)
     
-    print(f'{green}TODO ({index}. {todo[index]["name"]}) unmarked as done!{end}\n')
+    print(color.green(f'TODO ({index}. {todo[index]["name"]}) unmarked as done!\n'))
 
     logger.log(f'TODO: \'{index} - {todo[index]["name"]}\' unmarked as done')
 
 def view_todo():
     todo = get_todo()
     for i, item in enumerate(todo):
-        print(f'{blue}{i}. {yellow}{item["name"]}{end}')
+        print(f'{color.blue(i)}. {color.yellow(item["name"])}')
 
 def open_todo(index: int):
     todo = get_todo()
-    print(f'{yellow}{bold}Name:{end} {cyan}{todo[index]["name"]}{end}')
-    print(f'{yellow}{bold}Description:{end} {cyan}{todo[index]["description"]}{end}')
-    print(f'{yellow}{bold}Added:{end} {cyan}{time.ctime(todo[index]["added"])}{end}')
-    print(f'{green}{bold}Done:{end} {purple}{todo[index]["done"]}{end}\n')
+    print(f'{color.yellow("Name: ", bold = True)} {color.cyan(todo[index]["name"])}')
+    print(f'{color.yellow("Description: ", bold = True)} {color.cyan(todo[index]["description"])}')
+    print(f'{color.yellow("Added: ", bold = True)} {color.cyan(time.ctime(todo[index]["added"]))}')
+    print(f'{color.green("Done: ")} {color.purple(todo[index]["done"])}')
 
 def remove_todo(index: int):
     todo = get_todo()
@@ -88,32 +79,32 @@ def remove_todo(index: int):
     with open('todo.json', 'w') as f:
         json.dump(todo, f)
 
-    print(f'{green}TODO removed!{end}\n')
+    print(color.green('TODO removed!\n'))
 
 
 def ui(choice: str, text: str):
     if choice == '1':
-        name = input(f'{yellow}Enter name: {end}')
-        description = input(f'{yellow}Enter description: {end}')
+        name = input(color.yellow("Enter Name: "))
+        description = input(color.yellow("Enter Description: "))
         add_todo(name, description)
 
     elif choice == '2':
-        index = int(input(f'{yellow}Enter index: {end}'))
+        index = int(input(color.yellow("Enter Index: ")))
         mark_as_done(index)
 
     elif choice == '3':
-        index = int(input(f'{yellow}Enter index: {end}'))
+        index = int(input(color.yellow("Enter Index: ")))
         unmark_as_done(index)
 
     elif choice == '4':
         view_todo()
 
     elif choice == '5':
-        index = int(input(f'{yellow}Enter index: {end}'))
+        index = int(input(color.yellow("Enter Index: ")))
         open_todo(index)
     
     elif choice == '6':
-        index = int(input(f'{yellow}Enter index: {end}'))
+        index = int(input(color.yellow("Enter Index: ")))
         remove_todo(index)
     
     elif choice == '7':
@@ -129,31 +120,31 @@ def ui(choice: str, text: str):
         exit()
 
     else:
-        print(f'{red}Invalid choice. Type \'h\' for help.{end}')
+        print(color.red('Invalid choice. Type \'h\' for help.', bold = True))
 
 def main():
     text = textwrap.dedent(\
         f"""
-        {blue}{bold}---------- TODO LIST ----------{end}
-        {yellow}1.{end} {cyan}Add a new TODO{end}
-        {yellow}2.{end} {cyan}Mark a TODO as done{end}
-        {yellow}3.{end} {cyan}Unmark a TODO as done{end}
-        {yellow}4.{end} {cyan}View all TODOs{end}
-        {yellow}5.{end} {cyan}Open a TODO{end}
-        {yellow}6.{end} {cyan}Remove a TODO{end}
-        {yellow}7.{end} {cyan}Setup / Clear TODO{end}
+        {color.blue('---------- TODO LIST ----------', bold = True)}
+        {color.yellow('1.')} {color.cyan('Add a new TODO')}
+        {color.yellow('2.')} {color.cyan('Mark a TODO as done')}
+        {color.yellow('3.')} {color.cyan('Unmark a TODO as done')}
+        {color.yellow('4.')} {color.cyan('View all TODOs')}
+        {color.yellow('5.')} {color.cyan('Open a TODO')}
+        {color.yellow('6.')} {color.cyan('Remove a TODO')}
+        {color.yellow('7.')} {color.cyan('Setup / Clear TODO')}
         
-        {purple}h{end} - {green}Help{end}
-        {purple}c{end} - {green}Clear screen{end}
-        {purple}exit{end} - {green}Exit{end}
-        {blue}{bold}--------------------------------{end}
+        {color.purple('h')} - {color.green('Help')}
+        {color.purple('c')} - {color.green('Clear screen')}
+        {color.purple('exit')} - {color.green('Exit')}
+        {color.blue('--------------------------------', bold = True)}
         """
     )
 
     print(text)
 
     while True:
-        choice = input(f'{green}Enter your choice: {end}')
+        choice = input(color.green('Enter your choice: '))
         ui(choice, text)
 
 
@@ -166,21 +157,21 @@ if __name__ == '__main__':
         except IndexError as e:
             click.clear()
             logger.warning(e)
-            print(f'{red}{bold}Invalid index.{end}')
+            print(color.red('Invalid Index.', bold = True))
             raise
 
         except FileNotFoundError:
             click.clear()
-            print(f'{red}{bold}File \'todo.json\': File not found.\nYou might want to run Setup (7){end}')
+            print(color.red('File \'todo.json\': File not found.\nYou might want to run Setup (7)', bold = True))
             raise
 
     except FileNotFoundError as e:
         logger.warning(e)
-        print(f'\n{red}{bold}Exiting...{end}')
+        print(color.red('Exiting...', bold = True))
 
     except (KeyboardInterrupt, SystemExit):
         logger.log('Exited')
-        print(f'\n{red}{bold}Exiting...{end}')
+        print(color.red('Exiting...', bold = True))
 
     except IndexError:
         main()
